@@ -4,12 +4,14 @@ var path = require("path");
 var bodyparser = require("body-parser");
 var mongoose = require("mongoose");
 var port = process.env.port||3000;
+var db = require("./config/database");
 
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended:true}));
 app.use(express.json());
 
-mongoose.connect("mongodb://localhost:27017/gameEntries",{
+//Mongoos Connect (mongodb+srv://Mango12345:<password>@cluster0.w21atvv.mongodb.net/?retryWrites=true&w=majority);
+mongoose.connect(db.mongoURI,{
     useNewURLParser:true
 
 }).then(function(){
