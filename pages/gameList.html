@@ -12,6 +12,7 @@
     <p>List Games Here:</p>
     <nav>
         <a href="index.html">Enter games here</a>
+        <a href="updatePage.html">Update Pages</a>
     </nav>
 
     <script>
@@ -44,6 +45,27 @@
                     });
                     gameElement.appendChild(deleteButton);
 
+                    var updateButton = document.createElement("button");
+                    updateButton.innerText = "Update Game";
+                    updateButton.addEventListener("click", function(){
+                        window.location.replace("/updatePage.html?id="+game._id+ "&name=" + game.game);
+                        //window.location.replace("/updateGame:" + game._id + "&name=" + game.game);
+
+                        //Fetch request
+                            //location.reload();
+                            /*fetch("/getID", {
+                            method:"POST" ,
+                            headers:{
+                                "Content-Type":"application/json"
+                            } ,
+                                body:JSON.stringify({
+                                    game:game._id
+                                })
+
+                            })*/
+                    });
+
+                    gameElement.appendChild(updateButton);
                 }
             })
         });
