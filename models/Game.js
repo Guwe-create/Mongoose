@@ -4,8 +4,7 @@ var Schema = mongoose.Schema;
 var Schema = new Schema({
     game:{
         type:String,
-        required:true
-
+        score: Number
     }
 });
 

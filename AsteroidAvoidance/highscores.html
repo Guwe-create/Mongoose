@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Highscores</title>
+</head>
+<body>
+    <canvas width="800" height="600" style="border:1px solid black; background-color: black;" id="canvas">
+    
+    
+        
+    </canvas>
+    <nav>
+        <a href="index.html" style="position:absolute; left:40px; top:450px; width:100px; background-color: white;">Play Game Again</a>
+    </nav>
+    <h1 style="position:absolute; left:340px; top:50px; width:100px; color: white;" >Highscores:</h1>
+    <div id="container"> 
+        <p>Press to play again</p>
+        <script>
+            var canvas = document.getElementById("canvas");
+             var context = canvas.getContext("2d");
+                        context.fillStyle = "white";
+                        context.font = "bold 18px Arial";
+            var count = 0;
+
+            fetch("/getGames").then(function(games){
+                games.json().then(function(theGames){
+                    console.log(theGames);
+                    
+                    //Appends the names of the games to things
+                    for(let game of theGames.game)
+                    {
+                        count = count + 15;
+                        var gameElement = document.createElement('p');
+                        //gameElement.innerHTML = game.game + " " ;
+                        context.fillText(game.game, (canvas.width / 3) - 17, (canvas.height / 5) + count);
+                        document.getElementById("container").appendChild(gameElement);
+                        
+                        var deleteButton = document.createElement("text");
+                        //drawLink(95,93,"index.html","Play Again");
+                        //deleteButton.innerText = "Delete Game";
+                       /* deleteButton.addEventListener("click", function(){
+                            //Fetch request
+                                location.reload();
+                                fetch("/deleteGame", {
+                                method:"POST" ,
+                                headers:{
+                                    "Content-Type":"application/json"
+                                } ,
+                                    body:JSON.stringify({
+                                        game:game._id,
+                                        
+                                    })
+    
+                                })
+                        });*/
+                        gameElement.appendChild(deleteButton);
+                        //alert(game.game);
+    
+                    }
+                    
+                })
+            });
+        </script>
+        </div>
+        <script src="script.js"></script>
+</body>
+</html>
