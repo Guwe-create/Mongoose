@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Query Example</title>
+</head>
+<body>
+    <h1>Search Results</h1>
+    <p id="id"></p>
+    <p id="results"></p>
+    <br>
+    
+
+        <input type="text" name="game" id="GameTitle" placeholder="Enter Info Here">
+        <br>
+    <button style="position:absolute; left:350px; top:460px; width:100px;" type = "submit" id="search">
+        Search
+        </button>
+        <button style="position:absolute; left:350px; top:490px; width:100px;" type = "submit" id="sort">
+            Sort
+            </button>
+            <button style="position:absolute; left:350px; top:520px; width:100px;" type = "submit" id="delete">
+                Delete
+                </button>
+        <nav>
+            <a href="index.html" style="position:absolute; left:225px; top:20px; width:100px; background-color: white;">Play Game Again</a>
+            
+        </nav>
+        <h1 style="position:absolute; left:340px; top:150px; width:100px; color: black;" >The Search:</h1>
+        <h1 style="position:absolute; left:340px; top:250px; width:300px; color: black;" >Please search before sorting</h1>
+        <form action="/search" method="post">
+            <input type="text" name="game" id="game" placeholder="Name Search">
+            <input type="submit">
+        </form>
+    <div id="container"> 
+        <script>
+            var data = window.location.search;
+        console.log(data);
+        var entries = new URLSearchParams(data);
+
+        if(entries.get("game") != ""){
+            document.getElementById("id").innerText = "id = " + entries.get("id");
+            document.getElementById("results").innerText = "Game Name = " + entries.get("game");
+        }
+
+
+            var flip = false;
+
+ //#region Bubble Sorts
+function bblSort1(arr){
+    var test = 1;
+
+    
+
+    if(flip == false)
+    {
+        for(var i = 0; i < arr.length; i++){
+       
+      // Last i elements are already in place 
+      for(var j = 0; j < ( arr.length - i -1 ); j++){
+         if(arr[j] > 9)
+         {
+            test = 2;
+         }
+         else if(arr[j] > 99)
+         {
+            test = 3;
+         }
+         else if(arr[j] > 999)
+         {
+            test = 4;
+         }
+         else
+         {
+            test = 1;
+         }
+        // Checking if the item at present iteration
+        // is greater than the next iteration
+        if(arr[j].substr(arr[j].length - test, arr[j].length) < arr[j+1].substr(arr[j+1].length - test, arr[j+1].length)){
+           
+          // If the condition is true then swap them
+          var temp = arr[j]
+          arr[j] = arr[j + 1]
+          arr[j+1] = temp
+        }
+      }
+    }
+    // Print the sorted array
+    console.log(arr);
+    flip = true;
+    }
+    else if(flip == true)
+    {
+        for(var i = 0; i < arr.length; i++){
+       
+       // Last i elements are already in place 
+       for(var j = 0; j < ( arr.length - i -1 ); j++){
+        if(arr[j] > 9)
+         {
+            test = 2;
+         }
+         else if(arr[j] > 99)
+         {
+            test = 3;
+         }
+         else if(arr[j] > 999)
+         {
+            test = 4;
+         }
+         else
+         {
+            test = 1;
+         }
+         // Checking if the item at present iteration
+         // is greater than the next iteration
+         if(arr[j].substr(arr[j].length - test, arr[j].length) > arr[j+1].substr(arr[j+1].length - test, arr[j+1].length)){
+            
+           // If the condition is true then swap them
+           var temp = arr[j]
+           arr[j] = arr[j + 1]
+           arr[j+1] = temp
+         }
+       }
+     }
+     // Print the sorted array
+     console.log(arr);
+     flip = false;
+    }
+    //alert(arr);
+   };
+//#endregion
+            fetch("/getGames").then(function(games)
+            {
+                games.json().then(function(theGames)
+                {
+                    console.log(theGames);
+                    //bblSort(lastChar);
+                    //Appends the names of the games to things
+                    var tabId = [];
+                    var testArray = [];
+                    var sorted = true;
+
+                    for(let game of theGames.game)
+                {
+                    var setNumber = 1;
+                   // var gameElement = document.createElement('p');
+                    tabId.push(game.game.split(":").pop());
+
+                    //For testing purposes
+                    let result = game.game.substr(game.game.length - setNumber, game.game.length);
+                    //alert(tabId.game);
+                    testArray.push(game.game);
+                    
+                }
+
+                //#region Extra code that searchs and sorts using Javascript
+                document.getElementById("sort").addEventListener("click", function(event) {
+                    bblSort1(testArray);
+                   
+                     for (let i = 0; i < testArray.length; i++) 
+                         {
+                            var gameElement = document.createElement('p');
+                            gameElement.innerHTML = testArray[i];
+                            document.getElementById("container").appendChild(gameElement);
+                            // alert(document.getElementById("container"));
+                            var deleteButton = document.createElement("text");
+                            gameElement.appendChild(deleteButton);
+                        } 
+                });
+                  
+                        
+                document.getElementById("delete").addEventListener("click", function(event) {
+                    
+                    for (let i = 0; i < testArray.length; i++) 
+                         {
+                             document.getElementById("container").removeChild(document.getElementById("container").children[i]);
+                         }
+                     
+                });
+
+                document.getElementById("search").addEventListener("click", function(event) {
+                   const playerName = document.getElementById("GameTitle").value;
+                    var test = 1;
+                    
+                    for (let i = 0; i < testArray.length; i++) 
+                         {
+                           // #region Altertest
+                            //alert(tabId[1]);
+                            if(tabId[i] > 9)
+                            {
+                                test = 2;
+                                
+                            }
+                            else if(tabId[i] > 99)
+                            {
+                                test = 3;
+                                
+                            }
+                            else if(tabId[i] > 999)
+                            {
+                                test = 4;
+                            }
+                            else
+                            {
+                                //alert("test");
+                                test = 1;
+                            }
+                           // #endregion
+                                if(playerName == testArray[i].substr(testArray[i].length - test, testArray[i].length))//|| playerName == testArray[i].)
+                                {
+                                    //alert("test");
+                                    var gameElement = document.createElement('p');
+                                    gameElement.innerHTML = testArray[i].substr(testArray[i].length - test, testArray[i].length);
+                                    //alert(testArray[i]);
+                                    document.getElementById("container").appendChild(gameElement);
+                                        // alert(document.getElementById("container"));
+                                    var deleteButton = document.createElement("text");
+                                    gameElement.appendChild(deleteButton);
+                                        //alert("Nothing in search, or search not recognised...");
+                                 }
+                                
+                          }
+                            
+                     
+                });
+
+                    if(sorted == true)
+                    {
+                        for (let i = 0; i < testArray.length; i++) 
+                         {
+                            var gameElement = document.createElement('p');
+                            gameElement.innerHTML = testArray[i];
+                            document.getElementById("container").appendChild(gameElement);
+                            // alert(document.getElementById("container"));
+                            var deleteButton = document.createElement("text");
+                            gameElement.appendChild(deleteButton);
+                        } 
+                        sorted = false;
+                    }
+                    //#endregion
+                })
+            });
+        </script>
+</div>
+</body>
+</html>

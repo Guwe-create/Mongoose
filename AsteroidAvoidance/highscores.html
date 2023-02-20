@@ -9,11 +9,10 @@
 <body>
     <canvas width="800" height="600" style="border:1px solid black; background-color: black;" id="canvas">
     
-    
-        
     </canvas>
     <nav>
         <a href="index.html" style="position:absolute; left:40px; top:450px; width:100px; background-color: white;">Play Game Again</a>
+        <a href="QueryExample.html" style="position:absolute; left:40px; top:500px; width:100px; background-color: white;">Search Score</a>
     </nav>
     <h1 style="position:absolute; left:340px; top:50px; width:100px; color: white;" >Highscores:</h1>
     <div id="container"> 
@@ -35,7 +34,7 @@
                         count = count + 15;
                         var gameElement = document.createElement('p');
                         //gameElement.innerHTML = game.game + " " ;
-                        context.fillText(game.game, (canvas.width / 3) - 17, (canvas.height / 5) + count);
+                        context.fillText(game.game, (canvas.width / 3) - 13, (canvas.height / 5) + count);
                         document.getElementById("container").appendChild(gameElement);
                         
                         var deleteButton = document.createElement("text");

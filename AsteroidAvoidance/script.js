@@ -334,6 +334,7 @@ gameStates[2] = function(){
             } ,
                 body:JSON.stringify({
                     game: playerName + "   Highscore:" + playerScore,
+                    score: playerScore
                 })
 
             })

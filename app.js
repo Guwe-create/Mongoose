@@ -40,72 +40,33 @@ app.post("/swap", function(req,res){
 
 app.post("/saveGame", function(req, res){
     console.log(req.body);
-    //const highScoreSchema = new mongoose.Schema({
-    //   playerName: String,
-    //   score: Number
-    //  });
-     //const HighScore = mongoose.model("HighScore", highScoreSchema);
+  
     new Game(req.body).save().then(function(){
         //res.send(req.body);
         res.redirect("highscores.html");
         
     });
 });
-
-/*app.get('/highScorePage', (req, res) => {
-    HighScore.find({}).sort({score: -1}).exec((err, data) => {
-      if (err) {
-        res.send(err);
-      } else {
-        //send a compiled html doc with the info filled in
-        res.send(
-          <html>
-          <head>
-            <title>highscores</title>
-            <nav stlye = "display: flex; justify-content: center;">
-              <ul style = "display: flex; list-style: none; margin: 0; padding: 0;">
-                <li><a href="http://localhost:5000/" style = "color: black; text-decoration: none; padding: 20px;">Home</a></li>
-                <li><a href="http://localhost:5000/highScorePage" style = "color: black; text-decoration: none; padding: 20px;">High Scores Listing</a></li>
-                <li><a href="http://localhost:5000/highScoreJSON" style = "color: black; text-decoration: none; padding: 20px;">High Scores JSON Strings</a></li>
-              </ul>
-            </nav>
-          </head>
-          <body>
-            <table>
-              <tr>
-                <th>Name</th>
-                <th>Score</th>
-                
-              </tr>
-              ${data.map(item => 
-                <tr>
-                  <td>${item.playerName}</td>
-                  <td>${item.score}</td>
-
-                </tr>
-              ).join('')}
-            </table>
-          </body>
-          </html>
-        );
-      }
-    });
-  });*/
-
+//Searching and sorting the games
+app.get("/sort",function(req,res){
+  Game.find({}).sort({"game":1}).then(function(game){
+    res.json({game});
+  });
+});
+app.post("/search", function(req, res){
+  console.log(req.body.game);
+  Game.find({"game":req.body.game}).then(function(game){
+      res.redirect("QueryExample.html?id=" + game[0]._id + "&game=" + game[0].game);
+  }).catch(function(){
+      res.redirect("QueryExample.html?game=");
+  });
+});
 
 app.get("/getGames", function(req,res){
     Game.find({}).then(function(game)
     {
-        /*db.collection("highscores")
-      .find({})
-      .sort({ "score": -1 })
-      .toArray((error, scores) => {
-        if (error) throw error;
-        res.send(scores);
-      });*/
-        //console.log({game});
         res.json({game});
-    })
+    });
 });
 
 app.post("/deleteGame", function(req,res){

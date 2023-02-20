@@ -3,8 +3,11 @@ var Schema = mongoose.Schema;
 
 var Schema = new Schema({
     game:{
-        type:String,
-        score: Number
+        type:String
+        
+    },
+    score:{
+        type:Number
     }
 });
 
