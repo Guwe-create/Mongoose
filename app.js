@@ -74,6 +74,21 @@ app.post("/deleteGame", function(req,res){
     Game.findByIdAndDelete(req.body.game).exec();
     res.redirect('highscores.html');
 });
+app.post("/updateGame", function(req,res)
+{
+    console.log(req.body);
+    ///res.redirect('gameList.html');
+    Game.findByIdAndUpdate(req.body.id, {game:req.body.game}, function()
+    {
+        res.redirect('gameList.html');
+    });
+});
+
+app.post("/getID::id", function(req,res)
+{
+console.log(req.params.game);
+res.redirect(`updatePage.html?id=${req.params.id}`);// + "/" + req.body.game._id);
+});
 
 app.use(express.static(__dirname+"/AsteroidAvoidance"));
 app.listen(port, function(){
