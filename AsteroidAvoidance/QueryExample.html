@@ -13,7 +13,7 @@
     <br>
     
 
-        <input type="text" name="game" id="GameTitle" placeholder="Enter Info Here">
+        <input type="text" name="game" id="GameTitle" placeholder="Search By Number">
         <br>
     <button style="position:absolute; left:350px; top:460px; width:100px;" type = "submit" id="search">
         Search
@@ -32,7 +32,7 @@
         <h1 style="position:absolute; left:340px; top:250px; width:300px; color: black;" >Please search before sorting</h1>
         <form action="/search" method="post">
             <input type="text" name="game" id="game" placeholder="Name Search">
-            <input type="submit">
+            <input type="submit" id="bG">
         </form>
     <div id="container"> 
         <script>
@@ -40,7 +40,8 @@
         console.log(data);
         var entries = new URLSearchParams(data);
 
-        if(entries.get("game") != ""){
+        if(entries.get("game") != "")
+        {
             document.getElementById("id").innerText = "id = " + entries.get("id");
             document.getElementById("results").innerText = "Game Name = " + entries.get("game");
         }
@@ -142,7 +143,7 @@ function bblSort1(arr){
                     var testArray = [];
                     var sorted = true;
 
-                    for(let game of theGames.game)
+                for(let game of theGames.game)
                 {
                     var setNumber = 1;
                    // var gameElement = document.createElement('p');
@@ -212,7 +213,7 @@ function bblSort1(arr){
                                 {
                                     //alert("test");
                                     var gameElement = document.createElement('p');
-                                    gameElement.innerHTML = testArray[i].substr(testArray[i].length - test, testArray[i].length);
+                                    gameElement.innerHTML = testArray[i];
                                     //alert(testArray[i]);
                                     document.getElementById("container").appendChild(gameElement);
                                         // alert(document.getElementById("container"));
@@ -225,6 +226,20 @@ function bblSort1(arr){
                             
                      
                 });
+
+                document.getElementById("bG").addEventListener("click", function(event) {
+                    
+                    for (let i = 0; i < testArray.length; i++) 
+                         {
+                             if(document.getElementById("game").value == testArray[i])
+                             {
+                                document.getElementById("game").value = testArray[i];
+                             }
+                             
+                         }
+                     
+                });
+
 
                     if(sorted == true)
                     {

@@ -55,9 +55,25 @@ app.get("/sort",function(req,res){
 });
 app.post("/search", function(req, res){
   console.log(req.body.game);
-  Game.find({"game":req.body.game}).then(function(game){
-      res.redirect("QueryExample.html?id=" + game[0]._id + "&game=" + game[0].game);
-  }).catch(function(){
+  var test;
+  Game.find({}).then(function(game)
+  {
+    
+    for (let i = 0; i < game.length; i++) 
+        {
+          var holdGame = game;//.//su//g(0, string.indexOf(":"));
+          //test = holdGame[i].game;
+        if(holdGame[i].game = req.body.game)
+         {
+            test = game[i].id;
+         }
+         
+        }
+
+    res.redirect("QueryExample.html?id=" + test + "&game=" + req.body.game);
+
+  }).catch(function()
+  {
       res.redirect("QueryExample.html?game=");
   });
 });
