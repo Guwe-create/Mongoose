@@ -91,8 +91,23 @@ app.post("/unity", function(req, res){
         "lastName" : req.body.lastName,
         "firstName" : req.body.firstName
     }
+    Game.find({}).then(function(game)
+    {
+        for (let i = 0; i < game.length; i++) 
+        {
+            if(game[i].name == req.body.name)
+            {
+                console.log(`Game Deleted ${req.body.name}`);
+                Game.findByIdAndDelete(game[i]).exec();
+            }
+        }
+    });
+
     new Game(req.body).save().then(function(){
-        res.send(req.body);
+        //if(req.body != null)
+        //{
+            res.send(req.body);
+        //}
         
     });
     console.log(unityData);
@@ -143,14 +158,62 @@ app.post("/searchUnity", function(req, res){
 });
 //#endregion
 
+//#region DeleteUnityandEdit
+var deleteAble;
+
+app.post("/deleteUnity", function(req, res){
+    console.log("Deleting from Unity");
+    //prep an object to recieve the object data
+    Game.find({}).then(function(game)
+    {
+        deleteAble = req.body.name;
+        for (let i = 0; i < game.length; i++) 
+        {
+            if(game[i].name == deleteAble)
+            {
+                console.log(`Game Deleted ${req.body.name}`);
+                Game.findByIdAndDelete(game[i]).exec();
+                
+            }
+        }
+    });
+});
+var editAble;
+app.post("/editUnity", function(req, res){
+    console.log("Editing from Unity");
+    //prep an object to recieve the object data
+    Game.find({}).then(function(game)
+    {
+        editAble = req.body.name;
+        for (let i = 0; i < game.length; i++) 
+        {
+            if(game[i].name == editAble)
+            {
+                console.log(`Game Edited ${req.body.name}`);
+                Game.findByIdAndUpdate(game[i], {level:req.body.level,firstName:req.body.firstName,lastName:req.body.lastName,score:req.body.score,timeElapsed:req.body.timeElapsed}, function()
+                {
+                });
+                
+            }
+        }
+    });
+});
+
+//#endregion
+
+
 app.get("/getData", function(req,res){
     console.log("request made return");
     Game.find({}).then(function(game)
     {
         var dataToSend;
+        game.sort();
         //console.log(game);
         //test = score.score;
-       
+            if(game[game.length - timing].name == null)
+            {
+                timing = 1;
+            }
             //var placeHold;
             if(game.length - timing > 0)
             {
