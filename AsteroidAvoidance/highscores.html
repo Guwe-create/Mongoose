@@ -23,7 +23,7 @@
                         context.fillStyle = "white";
                         context.font = "bold 18px Arial";
             var count = 0;
-
+            var spacer = 10;
             fetch("/getGames").then(function(games){
                 games.json().then(function(theGames){
                     console.log(theGames);
@@ -35,12 +35,21 @@
                         var gameElement = document.createElement('p');
                         //gameElement.innerHTML = game.game + " " ;
                         context.fillText(game.game, (canvas.width / 3) - 13, (canvas.height / 5) + count);
+                        if(game.name != null)
+                            {
+                                context.fillText(game.name, (canvas.width / 3) - 13, (canvas.height / 5) + count + spacer * 2);
+                        context.fillText(game.score, (canvas.width / 3) - 13, (canvas.height / 5) + count + spacer * 4);
+                        context.fillText(game.lastName, (canvas.width / 3) - 13, (canvas.height / 5) + count + spacer * 6);
+                        context.fillText(game.firstName, (canvas.width / 3) - 13, (canvas.height / 5) + count + spacer * 8);
+                        context.fillText(game.level, (canvas.width / 3) - 13, (canvas.height / 5) + count + spacer * 10);
+                            }
+                        
                         document.getElementById("container").appendChild(gameElement);
                         
                         var deleteButton = document.createElement("text");
                         //drawLink(95,93,"index.html","Play Again");
-                        //deleteButton.innerText = "Delete Game";
-                       /* deleteButton.addEventListener("click", function(){
+                        deleteButton.innerText = "Delete Game";
+                        deleteButton.addEventListener("click", function(){
                             //Fetch request
                                 location.reload();
                                 fetch("/deleteGame", {
@@ -54,7 +63,7 @@
                                     })
     
                                 })
-                        });*/
+                        });
                         gameElement.appendChild(deleteButton);
                         //alert(game.game);
     

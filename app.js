@@ -2,6 +2,7 @@ var express = require("express");
 var app = express();
 var path = require("path");
 var bodyparser = require("body-parser");
+var timing = 1;
 //var mongoose = require("mongoose");
 var port = process.env.port||5000;
 //var db = require("./config/database");
@@ -76,6 +77,131 @@ app.post("/search", function(req, res){
   {
       res.redirect("QueryExample.html?game=");
   });
+});
+
+//Unity Route Testing
+app.post("/unity", function(req, res){
+    console.log("Hello from Unity.");
+    //prep an object to recieve the object data
+    var unityData = {
+        "level" : req.body.level,   //we can grab basedon the parameter name values of the obj we want to grab
+        "timeElapsed" : req.body.timeElapsed,
+        "name" : req.body.name,
+        "score" : req.body.score,
+        "lastName" : req.body.lastName,
+        "firstName" : req.body.firstName
+    }
+    new Game(req.body).save().then(function(){
+        res.send(req.body);
+        
+    });
+    console.log(unityData);
+});
+
+//#region SearchFunction
+var placeSearch = 0;
+var searchPlace;
+app.get("/getSearch", function(req,res){
+    console.log("request made return");
+    Game.find({}).then(function(game)
+    {
+        var dataToSend = [];
+        for (let i = 0; i < game.length; i++) 
+        {
+            if(game[i].name == searchPlace)
+            {
+                game[i].name = "( Read: " + game[i].name + ")";
+                dataToSend[placeSearch] = 
+                {
+                    "level" : game[i].level,   //we can grab basedon the parameter name values of the obj we want to grab
+                    "timeElapsed" : game[i].timeElapsed,
+                    "name" : game[i].name,
+                    "score" : game[i].score,
+                    "lastName" : game[i].lastName,
+                    "firstName" : game[i].firstName
+                }
+                
+                
+            }
+        }
+        //console.log(dataToSend[placeSearch]);
+        res.send(dataToSend[placeSearch]);
+        placeSearch = placeSearch + 1;
+    
+    });
+});
+
+
+app.post("/searchUnity", function(req, res){
+    console.log("Hello from Unity search.");
+    //prep an object to recieve the object data
+    Game.find({}).then(function(game)
+    {
+        searchPlace = req.body.name;
+        
+    });
+});
+//#endregion
+
+app.get("/getData", function(req,res){
+    console.log("request made return");
+    Game.find({}).then(function(game)
+    {
+        var dataToSend;
+        //console.log(game);
+        //test = score.score;
+       
+            //var placeHold;
+            if(game.length - timing > 0)
+            {
+                dataToSend = 
+            {
+        
+                "level" : game[game.length - timing].level,   //we can grab basedon the parameter name values of the obj we want to grab
+                "timeElapsed" : game[game.length - timing].timeElapsed,
+                "name" : game[game.length - timing].name,
+                "score" : game[game.length - timing].score,
+                "lastName" : game[game.length - timing].lastName,
+                "firstName" : game[game.length - timing].firstName
+            }
+
+            timing = timing + 1;
+            }
+            
+           // dataToSend = dataToSend + placeHold;
+        
+        res.send(dataToSend);
+    
+    });
+});
+app.get("/sendUnityData", function(req, res){
+    console.log("request made");
+    var test;
+    Game.find({}).then(function(game)
+    {
+        var dataToSend;
+        //console.log(game);
+        //test = score.score;
+        for (let i = 0; i < game.length; i++) 
+        {
+            //var placeHold;
+            dataToSend = 
+            {
+        
+                "level" : game[i].level,   //we can grab basedon the parameter name values of the obj we want to grab
+                "timeElapsed" : game[i].timeElapsed,
+                "name" : game[i].name,
+                "score" : game[i].score,
+                "lastName" : game[i].lastName,
+                "firstName" : game[i].firstName
+            }
+           // dataToSend = dataToSend + placeHold;
+        }
+        res.send(dataToSend);
+    
+    });
+    
+   
 });
 
 app.get("/getGames", function(req,res){

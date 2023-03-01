@@ -8,6 +8,21 @@ var Schema = new Schema({
     },
     score:{
         type:Number
+    }, 
+    name:{
+        type:String
+    },
+    level:{
+        type:Number
+    },
+    timeElapsed:{
+        type:Number
+    },
+    firstName:{
+        type:String
+    },
+    lastName:{
+        type:String
     }
 });
 
