@@ -6,6 +6,7 @@ pygame.init()
 
 pygame.font.init()
 
+#Font
 font = pygame.font.SysFont('Comic Sans MS', 30)
 text = font.render('Score: 0', False, (0,0,0))
 score = 0
@@ -75,7 +76,7 @@ def ControlsAndCollision(xs,ys,xp,yp,sc):
         #Collision 
         if xs > xp[i] - 10 and xs < xp[i] + 10 and ys > yp[i] - 10 and ys < yp[i] + 10:
             xs = 0
-            
+
         #Respawning 
         if xp[i] < 0:
             xp[i] = 770
@@ -109,6 +110,7 @@ while True:
             pygame.quit()
             quit()
             
+    #Running the program
     x,y,xPos,yPos,score = ControlsAndCollision(x,y,xPos,yPos,score)
     x,y = Draw(x,y)
     
