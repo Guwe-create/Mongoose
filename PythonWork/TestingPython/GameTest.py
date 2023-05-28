@@ -1,9 +1,12 @@
+#The imports
 import pygame
 import random
 
+#Adding in pygame
 from pygame.locals import *
 pygame.init()
 
+#Adding in fonts
 pygame.font.init()
 
 #Font
