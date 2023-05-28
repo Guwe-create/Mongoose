@@ -133,5 +133,6 @@ while True:
         #Running the program
         x,y,xPos,yPos,score,healthNumber = ControlsAndCollision(x,y,xPos,yPos,score,healthNumber)
         x,y = Draw(x,y)
+    
 
     
