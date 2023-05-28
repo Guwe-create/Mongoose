@@ -11,6 +11,16 @@ font = pygame.font.SysFont('Comic Sans MS', 30)
 text = font.render('Score: 0', False, (0,0,0))
 score = 0
 
+#Gamestates
+GameStates = 0
+
+#Player Health
+Health = [pygame.display.set_mode((100,100)),pygame.display.set_mode((100,100)),pygame.display.set_mode((100,100))]
+healthX = [200, 250, 300]
+healthNumber = 3
+healthImage = pygame.image.load('Crystal.png')
+healthImage = pygame.transform.scale(healthImage,(100,100))
+
 #Player information
 pl = pygame.display.set_mode((50,50))
 player = pygame.image.load('f1.png.png')
@@ -37,6 +47,10 @@ def Draw(xs,ys):
     #Drawing the player and other objects
     pl.blit(player,(xs,ys))
 
+    #Drawing players health
+    for i in range(0,healthNumber):
+        Health[i].blit(healthImage,(healthX[i],-20))
+
     #Drawing to screen
     text = font.render('Score: {}'.format(score), False, (0,0,0))
     screen.blit(text,(0,0))
@@ -49,7 +63,7 @@ def Draw(xs,ys):
     return xs, ys
 
 # the player controls
-def ControlsAndCollision(xs,ys,xp,yp,sc):
+def ControlsAndCollision(xs,ys,xp,yp,sc,hNum):
 
      #The controls
     if keyboard[pygame.K_d]:
@@ -76,6 +90,8 @@ def ControlsAndCollision(xs,ys,xp,yp,sc):
         #Collision 
         if xs > xp[i] - 10 and xs < xp[i] + 10 and ys > yp[i] - 10 and ys < yp[i] + 10:
             xs = 0
+            ys = 0
+            hNum -= 1
 
         #Respawning 
         if xp[i] < 0:
@@ -90,8 +106,11 @@ def ControlsAndCollision(xs,ys,xp,yp,sc):
         if xs != xp[i] and ys > yp[i] - 3 and ys < yp[i] + 3:
             sc += 1
     
+    if hNum <= 0:
+        event.type = pygame.QUIT
 
-    return xs , ys , xp , yp , sc
+
+    return xs , ys , xp , yp , sc , hNum
 
 # the gameloop
 while True:
@@ -109,8 +128,10 @@ while True:
 
             pygame.quit()
             quit()
-            
-    #Running the program
-    x,y,xPos,yPos,score = ControlsAndCollision(x,y,xPos,yPos,score)
-    x,y = Draw(x,y)
+
+    if GameStates == 0:
+        #Running the program
+        x,y,xPos,yPos,score,healthNumber = ControlsAndCollision(x,y,xPos,yPos,score,healthNumber)
+        x,y = Draw(x,y)
+
     
