@@ -48,8 +48,10 @@ spawnTime = 600
 #Making the buttons
 startButton = pygame.display.set_mode((300,200))
 exitButton = pygame.display.set_mode((300,200))
+playButton = pygame.display.set_mode((300,200))
 start = pygame.image.load('StartButton.png')
 exit = pygame.image.load('EscapeButton.png')
+playAgain = pygame.image.load('ReplayButton.png')
 
 #Making the background screen
 screen = pygame.display.set_caption("Slime Dodge")
@@ -58,15 +60,42 @@ backgroundImage = pygame.transform.scale(backgroundImage,(800,600))
 screen = pygame.display.set_mode((800,600))
 color = (0,0,200)
 
+#Draw exit menu
+def DrawExitMenu(gm,eAmount,h,sT,sC):
+    #Buttons
+    screen.blit(backgroundImage,(0,0))
+    playButton.blit(playAgain,(200,100))
+    exitButton.blit(exit,(200,300))
 
+    #Restarting the inputs
+    if keyboard[pygame.K_SPACE]:
+        eAmount = 4
+        h = 3
+        sT = 0
+        sC = 0
+        gm = 1
+    #Allowing for the exit of the game
+    if keyboard[pygame.K_ESCAPE]:
+        event.type = pygame.QUIT
+    
+    #Running the program
+    pygame.display.update()
+    return gm,eAmount,h,sT,sC
+
+#Drawing the main menu
 def DrawMainMenu(gm):
+    #Button
     screen.blit(backgroundImage,(0,0))
     startButton.blit(start,(200,100))
     exitButton.blit(exit,(200,300))
+
+    #If the player starts the game
     if keyboard[pygame.K_SPACE]:
         gm = 0
     if keyboard[pygame.K_ESCAPE]:
         event.type = pygame.QUIT
+        
+    #Running the program
     pygame.display.update()
     return gm
 
@@ -111,7 +140,7 @@ def SpawnEnemy(speed,eAmount,x,y,s,sT):
 
 
 # the player controls
-def ControlsAndCollision(xs,ys,xp,yp,sc,hNum):
+def ControlsAndCollision(xs,ys,xp,yp,sc,hNum,gm):
      #The controls
     if keyboard[pygame.K_d]:
         xs += playerSpeed
@@ -154,9 +183,10 @@ def ControlsAndCollision(xs,ys,xp,yp,sc,hNum):
             sc += 1
     
     if hNum <= 0:
-        event.type = pygame.QUIT
+        gm = 2
+        #event.type = pygame.QUIT
 
-    return xs , ys , xp , yp , sc , hNum
+    return xs , ys , xp , yp , sc , hNum , gm
 
 # the gameloop
 while True:
@@ -178,12 +208,16 @@ while True:
     if GameStates == 0:
         #Running the program
         enemySpawnSpeed,enemyAmount,xPos,yPos,enemySpeed,spawnTime = SpawnEnemy(enemySpawnSpeed,enemyAmount,xPos,yPos,enemySpeed,spawnTime)
-        x,y,xPos,yPos,score,healthNumber = ControlsAndCollision(x,y,xPos,yPos,score,healthNumber)
+        x,y,xPos,yPos,score,healthNumber,GameStates = ControlsAndCollision(x,y,xPos,yPos,score,healthNumber,GameStates)
         x,y = Draw(x,y)
 
     #Drawing the main menu
     if GameStates == 1:
         GameStates = DrawMainMenu(GameStates)
+
+    #Drawing the exit menu
+    if GameStates == 2:
+        GameStates,enemyAmount,healthNumber,spawnTime,score = DrawExitMenu(GameStates,enemyAmount,healthNumber,spawnTime,score)
 
     
 
