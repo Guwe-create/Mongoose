@@ -129,6 +129,7 @@ while True:
             pygame.quit()
             quit()
 
+    #Gamestates added
     if GameStates == 0:
         #Running the program
         x,y,xPos,yPos,score,healthNumber = ControlsAndCollision(x,y,xPos,yPos,score,healthNumber)
