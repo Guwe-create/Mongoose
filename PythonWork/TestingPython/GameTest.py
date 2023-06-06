@@ -218,7 +218,7 @@ while True:
     #Drawing the exit menu
     if GameStates == 2:
         GameStates,enemyAmount,healthNumber,spawnTime,score = DrawExitMenu(GameStates,enemyAmount,healthNumber,spawnTime,score)
-    #Saving
+  
     
 
     
